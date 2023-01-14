@@ -1,6 +1,6 @@
 [submodule "proton-wine"]
 	path = proton-wine
-	url = http://github.com/rankynbass/proton-wine/
+	url = http://github.com/rankynbass/unofficial-wine-xiv/
 [submodule "wine-staging"]
 	path = wine-staging
 	url = https://github.com/wine-staging/wine-staging/
