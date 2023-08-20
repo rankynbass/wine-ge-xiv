@@ -258,6 +258,9 @@
     # ntdll-RtlQueryPackageIdentity
     patch -Np1 < ../patches/wine-hotfixes/staging/ntdll-RtlQueryPackageIdentity/0003-ntdll-tests-Add-basic-tests-for-RtlQueryPackageIdent.patch
 
+    # server-default_integrity - ONLY ENABLE FOR WINE BUILDS, NOT PROTON BUILDS. CAUSES STEAM.EXE TO STAY OPEN AFTER GAME ENDS.
+    patch -Np1 < ../wine-staging/patches/server-default_integrity/0005-ntdll-Always-start-the-initial-process-through-start.patch
+
     # packager-DllMain
     patch -Np1 < ../patches/wine-hotfixes/staging/packager-DllMain/0001-packager-Prefer-native-version.patch
 
@@ -305,6 +308,14 @@
     echo "WINE: -GAME FIXES- Fix Uplay not launching with fsync enabled after converting proton-wine to wine-ge"
     patch -Np1 < ../patches/game-patches/uplay-fsync-proton-wine-hotfix.patch
 
+    #https://github.com/ValveSoftware/Proton/issues/580#issuecomment-1588435182
+    echo "WINE: -GAME FIXES- Fix FFXIV not playing Hydaelyn intro video on new install"
+    patch -Np1 < ../patches/game-patches/ffxiv_hydaelyn_intro_playback_fix.patch
+
+    # https://github.com/ValveSoftware/Proton/issues/6717
+    echo "WINE: -GAME FIXES- Fix Farlight 84 dxva crash"
+    patch -Np1 < ../patches/game-patches/farlight84.patch
+
 ### END GAME PATCH SECTION ###
 
 ### (2-4) WINE HOTFIX/BACKPORT SECTION ###
@@ -321,6 +332,10 @@
     echo "WINE: -PENDING- Guild Wars 2 patch"
     patch -Np1 < ../patches/wine-hotfixes/pending/hotfix-guild_wars_2.patch
 
+    # https://bugs.winehq.org/show_bug.cgi?id=22904
+    echo "WINE: -PENDING- EALink patch"
+    patch -Np1 < ../patches/wine-hotfixes/pending/ealink_fixup.patch
+
 ### END WINE PENDING UPSTREAM SECTION ###
 
 
@@ -332,23 +347,11 @@
     echo "WINE: -PROTON- Fix non-steam controller input"
     patch -Np1 < ../patches/proton/fix-non-steam-controller-input.patch
 
-#    echo "WINE: -FSR- fullscreen hack fsr patch"
-#    patch -Np1 < ../patches/proton/48-proton-fshack_amd_fsr.patch
-
-#    echo "WINE: -FSR- fake current res patches"
-#    patch -Np1 < ../patches/proton/65-proton-fake_current_res_patches.patch
-
-#    echo "WINE: -FSR- add 32:9 FSR resolutions"
-#    patch -Np1 < ../patches/proton/69-proton-fsr-add-329-res.patch
-
-#    echo "WINE: -FSR- add FSR resolutions by aspect ratio instead of current screen width"
-#    patch -Np1 < ../patches/proton/70-proton-add_fsr_res_by_aspect_ratio.patch
+    echo "WINE: -FSR- fullscreen hack fsr patch"
+    patch -Np1 < ../patches/proton/48-proton-fshack_amd_fsr.patch
     
 #    echo "WINE: -FSR- enable FSR flag by default (fixes broken fs hack scaling in some games like Apex and FFXIV)"
 #    patch -Np1 < ../patches/proton/71-invert-fsr-logic.patch
-    
-#    echo "WINE: -FSR- set 'balanced' default mode if no mode is set, and dont set any default mode if a custom mode is set"
-#    patch -Np1 < ../patches/proton/72-fsr-use-balanced-default-mode.patch
 
 ### END PROTON-GE ADDITIONAL CUSTOM PATCHES ###
 ### END WINE PATCHING ###
