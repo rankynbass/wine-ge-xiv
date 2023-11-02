@@ -19,6 +19,7 @@
 
 # Revert proton font changes, Using them as non-proton wine build breaks Uplay
 
+    git revert --no-commit 637902dcd157b3f4df4c497de7ac755115c81c99
     git revert --no-commit fe7901be6de96a7572fff977dd34584d96b5ec29
     git revert --no-commit ba3c43eb34cd10b7cf1c8e76319a2eef86f31f8b
     git revert --no-commit 72508b7d4110b76f90320ff009df1141f6e07901
@@ -105,7 +106,9 @@
     -W winex11.drv-Query_server_position \
     -W user32-Mouse_Message_Hwnd \
     -W wined3d-SWVP-shaders \
-    -W wined3d-Indexed_Vertex_Blending
+    -W wined3d-Indexed_Vertex_Blending \
+    -W shell32-registry-lookup-app \
+    -W winepulse-PulseAudio_Support
 
     # NOTE: Some patches are applied manually because they -do- apply, just not cleanly, ie with patch fuzz.
     # A detailed list of why the above patches are disabled is listed below:
@@ -181,6 +184,8 @@
     # winspool.drv-ClosePrinter - not required, only adds trace lines, for printers.
     # winmm-mciSendCommandA - not needed, only applies to win 9x mode
     # ** winex11-XEMBED - applied manually
+    # ** shell32-registry-lookup-app - applied manually
+    # ** winepulse-PulseAudio_Support - applied manually
     #
     # Paul Gofman — Yesterday at 3:49 PM
     # that’s only for desktop integration, spamming native menu’s with wine apps which won’t probably start from there anyway
@@ -286,6 +291,12 @@
     # kernel32-Debugger
     patch -Np1 < ../wine-staging/patches/kernel32-Debugger/0001-kernel32-Always-start-debugger-on-WinSta0.patch
 
+    # shell32-registry-lookup-app
+    patch -Np1 < ../patches/wine-hotfixes/staging/shell32-registry-lookup-app/0001-shell32-Append-.exe-when-registry-lookup-fails-first.patch
+
+    # winepulse-PulseAudio_Support
+    patch -Np1 < ../patches/wine-hotfixes/staging/winepulse-PulseAudio_Support/0001-winepulse.drv-Use-a-separate-mainloop-and-ctx-for-pu.patch
+
 ### END WINE STAGING APPLY SECTION ###
 
 ### (2-3) GAME PATCH SECTION ###
@@ -317,6 +328,14 @@
 
 ### (2-4) WINE HOTFIX/BACKPORT SECTION ###
 
+    # https://gitlab.winehq.org/wine/wine/-/merge_requests/3777
+    echo "WINE: -BACKPORT- R6 Siege backport"
+    patch -Np1 < ../patches/wine-hotfixes/upstream/3777.patch
+
+    # https://gitlab.winehq.org/wine/wine/-/merge_requests/2403
+    echo "WINE: -BACKPORT- LibreVR Revive backport"
+    patch -Np1 < ../patches/wine-hotfixes/upstream/2403.patch
+
 ### END WINE HOTFIX/BACKPORT SECTION ###
 
 ### (2-5) WINE PENDING UPSTREAM SECTION ###
@@ -328,9 +347,6 @@
     # https://bugs.winehq.org/show_bug.cgi?id=51683
     echo "WINE: -PENDING- Guild Wars 2 patch"
     patch -Np1 < ../patches/wine-hotfixes/pending/hotfix-guild_wars_2.patch
-
-    echo "WINE: -PENDING- Genshin Impact long URL patch"
-    patch -Np1 < ../patches/wine-hotfixes/pending/genshin-impact-long-url-hotfix.patch
 
 ### END WINE PENDING UPSTREAM SECTION ###
 
@@ -344,10 +360,18 @@
     patch -Np1 < ../patches/proton/fix-non-steam-controller-input.patch
 
     echo "WINE: -FSR- fullscreen hack fsr patch"
-    patch -Np1 < ../patches/proton/48-proton-fshack_amd_fsr.patch
-    
-#    echo "WINE: -FSR- enable FSR flag by default (fixes broken fs hack scaling in some games like Apex and FFXIV)"
-#    patch -Np1 < ../patches/proton/71-invert-fsr-logic.patch
+    patch -Np1 < ../patches/proton/47-proton-fshack-AMD-FSR-complete.patch
+
+    #echo "WINE: -FSR- fullscreen hack fsr patch"
+    #patch -Np1 < ../patches/proton/48-proton-fshack_amd_fsr.patch
+
+    #echo "WINE: -FSR- fullscreen hack resolution calculation fixup"
+    #patch -Np1 < ../patches/proton/49-fsr-width-using-height-and-aspect-ratio.patch
+    #echo "WINE: -FSR- fullscreen hack fix washed colors when FSR disabled"
+    #patch -Np1 < ../patches/proton/50-fsr-fix-washed-colors-when-disabled.patch
+
+    #echo "WINE: -FSR- enable FSR flag by default (fixes broken fs hack scaling in some games like Apex and FFXIV)"
+    #patch -Np1 < ../patches/proton/71-invert-fsr-logic.patch
 
 ### END PROTON-GE ADDITIONAL CUSTOM PATCHES ###
 ### END WINE PATCHING ###
