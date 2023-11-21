@@ -321,8 +321,9 @@
     patch -Np1 < ../patches/game-patches/ffxiv_hydaelyn_intro_playback_fix.patch
 
     # https://github.com/ValveSoftware/Proton/issues/6717
-    echo "WINE: -GAME FIXES- Fix Farlight 84 dxva crash"
-    patch -Np1 < ../patches/game-patches/farlight84.patch
+    # https://gitlab.winehq.org/wine/wine/-/merge_requests/4428
+    echo "WINE: -GAME FIXES- Fix Farlight 84 crash"
+    patch -Np1 < ../patches/wine-hotfixes/pending/4428.patch
 
 ### END GAME PATCH SECTION ###
 
@@ -347,6 +348,10 @@
     # https://bugs.winehq.org/show_bug.cgi?id=51683
     echo "WINE: -PENDING- Guild Wars 2 patch"
     patch -Np1 < ../patches/wine-hotfixes/pending/hotfix-guild_wars_2.patch
+
+    # https://github.com/ValveSoftware/wine/pull/205
+    echo "WINE: -PENDING- Add WINE_DISABLE_SFN option."
+    patch -Np1 < ../patches/wine-hotfixes/pending/ntdll_add_wine_disable_sfn.patch
 
 ### END WINE PENDING UPSTREAM SECTION ###
 
