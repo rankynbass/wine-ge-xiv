@@ -286,10 +286,10 @@
 
     # shell32-NewMenu_Interface
     patch -Np1 < ../patches/wine-hotfixes/staging/shell32-NewMenu_Interface/0001-shell32-Implement-NewMenu-with-new-folder-item.patch
-    
+
     # user32-FlashWindowEx
     patch -Np1 < ../patches/wine-hotfixes/staging/user32-FlashWindowEx/0001-user32-Improve-FlashWindowEx-message-and-return-valu.patch
-    
+
     # kernel32-Debugger
     patch -Np1 < ../wine-staging/patches/kernel32-Debugger/0001-kernel32-Always-start-debugger-on-WinSta0.patch
 
@@ -362,7 +362,7 @@
 
     echo "WINE: -PROTON- Remove steamclient patches for normal WINE usage"
     patch -Np1 < ../patches/proton/0001-De-steamify-proton-s-WINE-so-it-can-be-used-as-a-sta.patch
-    
+
     echo "WINE: -PROTON- Fix non-steam controller input"
     patch -Np1 < ../patches/proton/fix-non-steam-controller-input.patch
 
@@ -381,6 +381,14 @@
     #patch -Np1 < ../patches/proton/71-invert-fsr-logic.patch
 
 ### END PROTON-GE ADDITIONAL CUSTOM PATCHES ###
+
+    echo "LoL fixes"
+    patch -Np1 < ../patches/LoL/LoL-broken-client-update-fix.patch
+    patch -Np1 < ../patches/LoL/LoL-client-slow-start-fix.patch
+    patch -Np1 < ../patches/LoL/LoL-ntdll-nopguard-call_vectored_handlers.patch
+    patch -Np1 < ../patches/LoL/LoL-ntdll-implement-ntcontinueex.patch
+    patch -Np1 < ../patches/LoL/LoL-ntdll-fix-signal-set-full-context.patch
+
 ### END WINE PATCHING ###
     # need to run these after applying patches
     ./dlls/winevulkan/make_vulkan
